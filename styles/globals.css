@@ -11,7 +11,7 @@ body {
 }
 
 main {
-  padding: 5rem 0;
+  padding: 1rem 0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -27,14 +27,24 @@ code {
 }
 
 .container {
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: start;
+  align-items: start;
 }
 
 /* TODO move where? */
 .react-draggable {
   width: 0;
+}
+
+.canvas-holder > div {
+  width: 800px;
+  height: 400px;
+  opacity: 0.5;
+}
+canvas {
+  width: 800px;
+  height: 400px;
 }

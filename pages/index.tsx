@@ -30,11 +30,28 @@ const Home: React.FunctionComponent = () => {
           {players.map((playerData) => (
             <Draggable>
               <div>
-                <PlayerMarker player={playerData} />
+                <PlayerMarker player={playerData} isActive={true} />
               </div>
             </Draggable>
           ))}
         </FieldBackground>
+        <div
+          style={{
+            position: "absolute",
+            left: "20px",
+            top: "20px",
+          }}
+        >
+          {getMockPlayers()
+            .slice(0, 5)
+            .map((playerData) => (
+              <Draggable>
+                <div>
+                  <PlayerMarker player={playerData} isActive={false} />
+                </div>
+              </Draggable>
+            ))}
+        </div>
       </main>
 
       <Footer />
