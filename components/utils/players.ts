@@ -1,4 +1,4 @@
-import { Player } from "schema/types";
+import type { Player } from "schema/types";
 
 type PersonResult = {
   name: {
@@ -10,14 +10,17 @@ type PersonResult = {
   };
 };
 
-const generatePlayers = async (amount: number): Promise<Player[]> => {
-  const result = (await fetch(
+const fetchPlayers = async (amount: number): Promise<PersonResult[]> =>
+  (await fetch(
     `https://randomuser.me/api/?page=1&results=${amount}`
   )) as unknown as PersonResult[];
-  return result.map((person, index) => ({
-    img: person.picture.medium,
-    number: index,
-    name: `${person.name.first} ${person.name.last}`,
+
+const generatePlayers = async (amount: number): Promise<Player[]> => {
+  const players = await fetchPlayers(amount);
+  return players.map(({ name, picture }, number) => ({
+    img: picture.medium,
+    number,
+    name: `${name.first} ${name.last}`,
   }));
 };
 export { generatePlayers };

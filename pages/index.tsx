@@ -44,10 +44,10 @@ const Home: React.FunctionComponent = () => {
         >
           {getMockPlayers()
             .slice(0, 5)
-            .map((playerData) => (
-              <Draggable>
+            .map((player, index) => (
+              <Draggable key={`draggable-player-${index}`}>
                 <div>
-                  <PlayerMarker player={playerData} isActive={false} />
+                  <PlayerMarker {...{ player }} isActive={false} />
                 </div>
               </Draggable>
             ))}
