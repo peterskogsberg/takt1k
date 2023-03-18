@@ -1,4 +1,3 @@
-import { urlQueryToSearchParams } from "node_modules/next/dist/shared/lib/router/utils/querystring";
 import React, { useRef, useState } from "react";
 import CanvasDraw from "react-canvas-draw";
 import { TwitterPicker } from "react-color";
@@ -10,12 +9,18 @@ type FieldBackgroundProps = {
   children: React.ReactNode;
 };
 
+const INITIAL_COLOR = "#cdcdcd";
+
 const FieldBackground: React.FunctionComponent<FieldBackgroundProps> = ({
   sport,
   children,
 }) => {
   const ref = useRef<CanvasDraw | null>(null);
-  const [color, setColor] = useState<string>("#cdcdcd");
+  const [color, setColor] = useState<string>(INITIAL_COLOR);
+  const [events, setEvents] = useState([]);
+  const [stopFn, setStopFn] = useState(null);
+
+  const ev = [];
 
   return (
     <>
@@ -70,6 +75,42 @@ const FieldBackground: React.FunctionComponent<FieldBackgroundProps> = ({
           }}
         >
           Load
+        </button>
+        <button
+          onClick={() => {
+            console.log("recording");
+
+            // const thisStopFn = rrweb.record({
+            //   emit(e) {
+            //     console.log(e);
+            //     ev.push(e);
+            //   },
+            // });
+            // setStopFn(thisStopFn);
+          }}
+        >
+          record
+        </button>
+        <button
+          onClick={() => {
+            console.log("stop rec");
+            // if (stopFn !== null) {
+            //   stopFn();
+            // }
+          }}
+        >
+          record
+        </button>
+        <button
+          onClick={() => {
+            console.log("play");
+            // const events = ev;
+
+            // const replayer = new rrweb.Replayer(events);
+            // replayer.play();
+          }}
+        >
+          play
         </button>
         <TwitterPicker
           color={color}
