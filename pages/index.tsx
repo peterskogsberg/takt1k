@@ -1,4 +1,4 @@
-import Footer from "@components/Footer";
+import { Footer } from "@components/Footer";
 import { PlayerMarker } from "@components/PlayerMarker";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import type { Player } from "schema/types";
 import { getMockPlayers } from "utils/players";
 import { FieldBackground } from "../components/FieldBackground";
 
-const Home: React.FunctionComponent = () => {
+const Takt1k: React.FunctionComponent = () => {
   const [players, setPlayers] = useState<Player[]>([]);
 
   useEffect(() => {
@@ -21,16 +21,16 @@ const Home: React.FunctionComponent = () => {
   return (
     <div className="container">
       <Head>
-        <title>Next.js Starter!</title>
+        <title>Takt1k</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
         <FieldBackground sport="hockey">
-          {players.map((playerData) => (
-            <Draggable>
+          {players.map((player, index) => (
+            <Draggable key={`draggable-home-player-${index}`}>
               <div>
-                <PlayerMarker player={playerData} isActive={true} />
+                <PlayerMarker {...{ player }} isActive={true} />
               </div>
             </Draggable>
           ))}
@@ -45,7 +45,7 @@ const Home: React.FunctionComponent = () => {
           {getMockPlayers()
             .slice(0, 5)
             .map((player, index) => (
-              <Draggable key={`draggable-player-${index}`}>
+              <Draggable key={`draggable-away-player-${index}`}>
                 <div>
                   <PlayerMarker {...{ player }} isActive={false} />
                 </div>
@@ -53,10 +53,9 @@ const Home: React.FunctionComponent = () => {
             ))}
         </div>
       </main>
-
       <Footer />
     </div>
   );
 };
 
-export default Home;
+export default Takt1k;

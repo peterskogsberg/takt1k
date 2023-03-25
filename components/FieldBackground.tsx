@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import CanvasDraw from "react-canvas-draw";
 import { TwitterPicker } from "react-color";
+// const rrweb = require("rrweb");
+// const rrweb = await import("rrweb");
 
 type Sport = "hockey" | "football";
 
@@ -11,6 +13,14 @@ type FieldBackgroundProps = {
 
 const INITIAL_COLOR = "#cdcdcd";
 
+const recordingConfig = {
+  recordCanvas: true,
+  collectFonts: true,
+  sampling: {
+    canvas: "10",
+  },
+} as const;
+
 const FieldBackground: React.FunctionComponent<FieldBackgroundProps> = ({
   sport,
   children,
@@ -18,48 +28,59 @@ const FieldBackground: React.FunctionComponent<FieldBackgroundProps> = ({
   const ref = useRef<CanvasDraw | null>(null);
   const [color, setColor] = useState<string>(INITIAL_COLOR);
   const [events, setEvents] = useState([]);
-  const [stopFn, setStopFn] = useState(null);
 
-  const ev = [];
+  let ev = [];
+  let stopFn = null;
+
+  const playFn = async (root: HTMLElement) => {
+    console.log({ ev });
+    const replayer = new rrweb.Replayer(ev, {
+      root,
+      UNSAFE_replayCanvas: true,
+    });
+    replayer.play();
+  };
 
   return (
     <>
-      <div
-        style={{
-          position: "absolute",
-          right: "80px",
-          top: "20px",
-          zIndex: 999,
-        }}
-      >
-        {children}
-      </div>
-      <div
-        style={{
-          width: "100vw",
-          height: "min(80vh, 400px)",
-          backgroundImage: `url('img/${sport}.png')`,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "contain",
-          backgroundPosition: "center",
-          margin: "0 auto",
-        }}
-      ></div>
-      <div
-        className="canvas-holder"
-        style={{
-          position: "absolute",
-          width: "800px",
-          height: "400px",
-          top: "20px",
-        }}
-      >
-        <CanvasDraw
-          ref={ref}
-          brushColor={color}
-          canvasWidth={"800"}
-          canvasHeight={"400"}
-        />
+      <div id="recording">
+        <div
+          style={{
+            position: "absolute",
+            right: "80px",
+            top: "20px",
+            zIndex: 999,
+          }}
+        >
+          {children}
+        </div>
+        <div
+          style={{
+            width: "100vw",
+            height: "min(80vh, 400px)",
+            backgroundImage: `url('img/${sport}.png')`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "contain",
+            backgroundPosition: "center",
+            margin: "0 auto",
+          }}
+        ></div>
+        <div
+          className="canvas-holder"
+          style={{
+            position: "absolute",
+            width: "800px",
+            height: "400px",
+            top: "20px",
+          }}
+        >
+          <CanvasDraw
+            ref={ref}
+            brushColor={color}
+            canvasWidth={"800"}
+            canvasHeight={"400"}
+          />
+        </div>
       </div>
       <div>
         <button
@@ -77,37 +98,43 @@ const FieldBackground: React.FunctionComponent<FieldBackgroundProps> = ({
           Load
         </button>
         <button
-          onClick={() => {
+          onClick={async () => {
             console.log("recording");
 
-            // const thisStopFn = rrweb.record({
-            //   emit(e) {
-            //     console.log(e);
-            //     ev.push(e);
-            //   },
-            // });
-            // setStopFn(thisStopFn);
+            rrweb.record({
+              emit(e) {
+                ev.push(e);
+                console.log(e);
+                console.log(ev.length);
+                // console.log({ ev });
+              },
+              ...recordingConfig,
+            });
+            // console.log("setting stop Fn", stopListener);
+            // stopFn = stopListener;
+            // stopFn = (evArray: unknown[]) => {
+            //   console.log("stopFn", evArray);
+            //   stopListener();
+            // };
           }}
         >
           record
         </button>
         <button
           onClick={() => {
-            console.log("stop rec");
-            // if (stopFn !== null) {
-            //   stopFn();
-            // }
+            console.log("stop rec", ev);
+            if (typeof stopFn === "function") {
+              stopFn();
+            }
           }}
         >
-          record
+          stop
         </button>
         <button
-          onClick={() => {
+          onClick={async () => {
             console.log("play");
-            // const events = ev;
-
-            // const replayer = new rrweb.Replayer(events);
-            // replayer.play();
+            const root = document.getElementById("replayer");
+            void playFn(root);
           }}
         >
           play
@@ -119,6 +146,14 @@ const FieldBackground: React.FunctionComponent<FieldBackgroundProps> = ({
             setColor(args.hex);
           }}
         />
+        <div
+          id="replayer"
+          style={{
+            width: "100%",
+            height: "200px",
+            background: "orange",
+          }}
+        ></div>
       </div>
     </>
   );

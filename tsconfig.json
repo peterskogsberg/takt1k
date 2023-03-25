@@ -2,19 +2,11 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@components/*": [
-        "components/*"
-      ],
-      "@styles/*": [
-        "styles/*"
-      ]
+      "@components/*": ["components/*"],
+      "@styles/*": ["styles/*"]
     },
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "target": "es2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -24,15 +16,10 @@
     "esModuleInterop": true,
     "module": "esnext",
     "resolveJsonModule": true,
+    "moduleResolution": "node",
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "next.config.js"],
+  "exclude": ["node_modules"]
 }
