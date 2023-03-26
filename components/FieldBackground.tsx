@@ -17,6 +17,8 @@ type FieldBackgroundProps = {
   children: React.ReactNode;
 };
 
+type RRstopper = () => void | null;
+
 const FieldBackground: React.FunctionComponent<FieldBackgroundProps> = ({
   sport,
   children,
@@ -24,9 +26,10 @@ const FieldBackground: React.FunctionComponent<FieldBackgroundProps> = ({
   const ref = useRef<CanvasDraw | null>(null);
   const [color, setColor] = useState<string>(INITIAL_COLOR);
   const [events, setEvents] = useState([]);
+  const stopperFn = useRef<RRstopper>(null);
 
-  let ev = [];
-  let stopFn = null;
+  const ev = [];
+  // let stopFn = null;
 
   const playFn = async (root: HTMLElement) => {
     console.log({ ev });
@@ -60,20 +63,23 @@ const FieldBackground: React.FunctionComponent<FieldBackgroundProps> = ({
           onRecord={() => {
             console.log("recording");
 
-            rrweb.record({
+            const stopper = rrweb.record({
               emit(e) {
                 ev.push(e);
                 console.log(e);
                 console.log(ev.length);
-                // console.log({ ev });
               },
               ...recordingConfig,
             });
+            stopperFn.current = stopper;
           }}
           onStop={() => {
             console.log("stop rec", ev);
-            if (typeof stopFn === "function") {
-              stopFn();
+            if (typeof stopperFn.current === "function") {
+              console.log("inside");
+              const st = stopperFn.current;
+              const retVal = stopperFn.current();
+              console.log({ retVal });
             }
           }}
           onPlay={() => {
@@ -86,6 +92,7 @@ const FieldBackground: React.FunctionComponent<FieldBackgroundProps> = ({
         <TwitterPicker
           color={color}
           onChangeComplete={(args) => {
+            // THIS IS WHY RECORDING STOPS FFS, ev array gets cleared
             console.log({ args });
             setColor(args.hex);
           }}
