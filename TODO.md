@@ -6,3 +6,4 @@
 - Cy spec
 - storybook
 - PWA manifest
+- useRecorder
