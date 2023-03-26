@@ -1,39 +1,41 @@
+import { useTeams } from "@components/context/useTeams";
 import { Footer } from "@components/Footer";
+import { ObjectMarker } from "@components/ObjectMarker";
 import { PlayerMarker } from "@components/PlayerMarker";
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Draggable from "react-draggable";
-import type { Player } from "schema/types";
-import { getMockPlayers } from "utils/players";
+import { FOOTBALL_CONFIGURATION, HOCKEY_CONFIGURATION } from "schema/sports";
+import type { SportConfiguration } from "schema/types";
 import { FieldBackground } from "../components/FieldBackground";
+import packageJSON from "../package.json";
 
 const Takt1k: React.FunctionComponent = () => {
-  const [players, setPlayers] = useState<Player[]>([]);
-
-  useEffect(() => {
-    const fetchPlayers = async () => {
-      const p = getMockPlayers().slice(5);
-      setPlayers(p);
-    };
-    void fetchPlayers();
-  }, []);
+  const [sport, setSport] = useState<SportConfiguration>(HOCKEY_CONFIGURATION);
+  const { homeTeam, awayTeam } = useTeams();
 
   return (
     <div className="container">
       <Head>
-        <title>Takt1k</title>
+        <title>{packageJSON.name}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <button onClick={() => setSport(FOOTBALL_CONFIGURATION)}>Football</button>
       <main>
-        <FieldBackground sport="hockey">
-          {players.map((player, index) => (
+        <FieldBackground sport={sport}>
+          {homeTeam.players.map((player, index) => (
             <Draggable key={`draggable-home-player-${index}`}>
               <div>
                 <PlayerMarker {...{ player }} isActive={true} />
               </div>
             </Draggable>
           ))}
+          <Draggable>
+            <div>
+              <ObjectMarker sport={sport} />
+            </div>
+          </Draggable>
         </FieldBackground>
         <div
           style={{
@@ -42,15 +44,13 @@ const Takt1k: React.FunctionComponent = () => {
             top: "20px",
           }}
         >
-          {getMockPlayers()
-            .slice(0, 5)
-            .map((player, index) => (
-              <Draggable key={`draggable-away-player-${index}`}>
-                <div>
-                  <PlayerMarker {...{ player }} isActive={false} />
-                </div>
-              </Draggable>
-            ))}
+          {awayTeam.players.map((player, index) => (
+            <Draggable key={`draggable-away-player-${index}`}>
+              <div>
+                <PlayerMarker {...{ player }} isActive={false} />
+              </div>
+            </Draggable>
+          ))}
         </div>
       </main>
       <Footer />

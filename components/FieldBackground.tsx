@@ -1,25 +1,15 @@
 import React, { useRef, useState } from "react";
 import CanvasDraw from "react-canvas-draw";
 import { TwitterPicker } from "react-color";
+import { SportConfiguration } from "schema/types";
+import { INITIAL_COLOR, recordingConfig } from "./recorder/config";
 // const rrweb = require("rrweb");
 // const rrweb = await import("rrweb");
 
-type Sport = "hockey" | "football";
-
 type FieldBackgroundProps = {
-  sport: Sport;
+  sport: SportConfiguration;
   children: React.ReactNode;
 };
-
-const INITIAL_COLOR = "#cdcdcd";
-
-const recordingConfig = {
-  recordCanvas: true,
-  collectFonts: true,
-  sampling: {
-    canvas: "10",
-  },
-} as const;
 
 const FieldBackground: React.FunctionComponent<FieldBackgroundProps> = ({
   sport,
@@ -58,7 +48,7 @@ const FieldBackground: React.FunctionComponent<FieldBackgroundProps> = ({
           style={{
             width: "100vw",
             height: "min(80vh, 400px)",
-            backgroundImage: `url('img/${sport}.png')`,
+            backgroundImage: `url('${sport.fieldImage}')`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "contain",
             backgroundPosition: "center",

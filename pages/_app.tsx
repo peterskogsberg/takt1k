@@ -1,4 +1,5 @@
 import ErrorBoundary from "@components/base/ErrorBoundary";
+import { TeamProvider } from "@components/context/TeamProvider";
 import { ThirdParty } from "@components/tags/ThirdParty";
 import "@styles/globals.css";
 
@@ -13,7 +14,9 @@ const Application: NextPage<AppProps & { err: unknown }> = ({
   <>
     <ThirdParty />
     <ErrorBoundary>
-      <Component {...pageProps} err={err} />
+      <TeamProvider>
+        <Component {...pageProps} err={err} />
+      </TeamProvider>
     </ErrorBoundary>
   </>
 );

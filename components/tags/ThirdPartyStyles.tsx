@@ -6,8 +6,14 @@ type ThirdPartyStylesProps = {
 
 const ThirdPartyStyles: React.FC<ThirdPartyStylesProps> = ({ styles }) => (
   <>
-    {styles.map(({ src }) => (
-      <link rel="stylesheet" href={src} />
+    {styles.map(({ src, sha256 }) => (
+      <link
+        key={src}
+        href={src}
+        integrity={sha256 ? `sha256-${sha256}` : undefined}
+        rel="stylesheet"
+        crossOrigin="anonymous"
+      />
     ))}
   </>
 );

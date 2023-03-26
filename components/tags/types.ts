@@ -6,6 +6,7 @@ type Script = {
 
 type Stylesheet = {
   src: string;
+  sha256?: string;
 };
 
 export type { Script, Stylesheet };

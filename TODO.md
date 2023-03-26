@@ -1,0 +1,8 @@
+- Voice recording on Record button
+- Canvas recording separated from RR
+- View transition
+- Provider or Reducer for recording
+- budget.json
+- Cy spec
+- storybook
+- PWA manifest
