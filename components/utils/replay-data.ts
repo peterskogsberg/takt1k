@@ -17,11 +17,15 @@ const playFn = (
 ) => {
   console.log("playFn");
   console.log({ events });
+  // Play
+  if (events.length < 2) {
+    console.debug("Replayer must have at least 2 events to play");
+    return;
+  }
 
   // Clear
   root.replaceChildren();
 
-  // Play
   const replayer = new rrweb.Replayer(events, {
     root,
     UNSAFE_replayCanvas: true,
