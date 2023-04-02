@@ -9,20 +9,29 @@ import { FOOTBALL_CONFIGURATION, HOCKEY_CONFIGURATION } from "schema/sports";
 import type { SportConfiguration } from "schema/types";
 import { FieldBackground } from "../components/FieldBackground";
 import packageJSON from "../package.json";
+import { TopAppBar } from "@components/appbar/TopAppBar";
+import { BLOCK_CLASS } from "@components/recorder/config";
 
 const Takt1k: React.FunctionComponent = () => {
   const [sport, setSport] = useState<SportConfiguration>(HOCKEY_CONFIGURATION);
   const { homeTeam, awayTeam } = useTeams();
 
   return (
-    <div className="container">
+    <div className={`container`}>
       <Head>
         <title>{packageJSON.name}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <button onClick={() => setSport(FOOTBALL_CONFIGURATION)}>Football</button>
-      <main>
+      <TopAppBar />
+      {/* <button onClick={() => setSport(FOOTBALL_CONFIGURATION)}>Football</button> */}
+      <main
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          position: "relative",
+          top: "64px",
+        }}
+      >
         <FieldBackground sport={sport}>
           {homeTeam.players.map((player, index) => (
             <Draggable key={`draggable-home-player-${index}`}>
@@ -32,11 +41,17 @@ const Takt1k: React.FunctionComponent = () => {
             </Draggable>
           ))}
           <Draggable>
-            <div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
               <ObjectMarker sport={sport} />
             </div>
           </Draggable>
-        </FieldBackground>
+          </FieldBackground>
         <div
           style={{
             position: "absolute",

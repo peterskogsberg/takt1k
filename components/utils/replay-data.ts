@@ -1,6 +1,7 @@
 import { recordingConfig } from "@components/recorder/config";
 import { eventWithTimeAndPacker } from "rrweb/typings/packer/base";
 import { rrweb } from "./recording";
+import { noop } from "./dummy";
 
 type RREvent = string | eventWithTimeAndPacker;
 type RREvents = RREvent[];
@@ -8,7 +9,7 @@ type RRstopper = () => void | null;
 
 const REPLAY_ID = "replayer";
 const ev: RREvents = [];
-let stopperFn: RRstopper = () => {};
+let stopperFn: RRstopper = noop;
 
 const playFn = (
   events: RREvents | undefined = ev,
@@ -36,20 +37,17 @@ const emitFn = (e: eventWithTimeAndPacker) => {
 
 const recordFn = () => {
   console.log("recording");
-  const stopFn = rrweb.record({
+  stopperFn = rrweb.record({
     emit: emitFn,
     ...recordingConfig,
   });
-  stopperFn = stopFn;
 };
 
 const stopFn = () => {
   console.log("stop rec", ev);
   if (typeof stopperFn === "function") {
-    const retVal = stopperFn();
-    console.log({ retVal });
+    stopperFn();
   }
 };
 
 export { playFn, recordFn, ev, stopFn };
-

@@ -11,12 +11,15 @@ const CANVAS_SIZE = {
   HEIGHT,
 };
 
+const BLOCK_CLASS = "do-not-record";
+
 const recordingConfig: recordOptions<eventWithTimeAndPacker> = {
   recordCanvas: true,
   collectFonts: true,
   sampling: {
     canvas: 10,
   },
+  blockClass: BLOCK_CLASS,
 } as const;
 
-export { INITIAL_COLOR, CANVAS_SIZE, recordingConfig };
+export { INITIAL_COLOR, CANVAS_SIZE, BLOCK_CLASS, recordingConfig };
