@@ -13,4 +13,6 @@ const Recorder: React.FC<PropsWithChildren<{}>> = ({ children }) => (
   </div>
 );
 
+Recorder.displayName = "Recorder";
+
 export { Recorder };

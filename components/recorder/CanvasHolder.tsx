@@ -1,17 +1,20 @@
 import { PropsWithChildren } from "react";
+import { CANVAS_SIZE } from "./config";
 
 const CanvasHolder: React.FC<PropsWithChildren<{}>> = ({ children }) => (
   <div
     className="canvas-holder"
     style={{
       position: "absolute",
-      width: "800px",
-      height: "400px",
+      width: `${CANVAS_SIZE.WIDTH}px`,
+      height: `${CANVAS_SIZE.HEIGHT}px`,
       top: "20px",
     }}
   >
     {children}
   </div>
 );
+
+CanvasHolder.displayName = "CanvasHolder";
 
 export { CanvasHolder };

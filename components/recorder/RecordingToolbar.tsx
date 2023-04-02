@@ -29,4 +29,6 @@ const RecordingToolbar: React.FC<PropsWithChildren<RecordingToolbarProps>> = ({
   </>
 );
 
+RecordingToolbar.displayName = "RecordingToolbar";
+
 export { RecordingToolbar };

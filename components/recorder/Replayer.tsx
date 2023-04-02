@@ -1,12 +1,16 @@
+import { CANVAS_SIZE } from "./config";
+
 const Replayer: React.FC = () => (
   <div
     id="replayer"
     style={{
-      width: "100%",
-      height: "200px",
+      width: `${CANVAS_SIZE.WIDTH}px`,
+      height: `${CANVAS_SIZE.HEIGHT}px`,
       background: "orange",
     }}
   />
 );
+
+Replayer.displayName = "Replayer";
 
 export { Replayer };
